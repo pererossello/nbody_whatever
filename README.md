@@ -2,7 +2,7 @@
 
 ![Example](example.gif)
 
-A toy N-body simulator. Load any image for your initial conditions by converting it into N bodies. The simulator uses a brute force approach (at O(N^2) force calculations per time step) and it is parallelized with numba. Snapshots from the simulation are saved at predefined times as an `.hdf5` file. Initial conditions are also stored as `.hdf5`. 
+A toy N-body simulator. Use an image for your initial conditions by converting it into N bodies. The simulator uses a brute force approach (at O(N^2) force calculations per time step) and it is parallelized with numba. Snapshots from the simulation are saved at predefined times as an `.hdf5` file. Initial conditions are also stored as `.hdf5`. 
 
 ## Structure
 
