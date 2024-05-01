@@ -18,5 +18,5 @@ Check the notebook `example_usage.ipynb`.
 
 ## Requirements
 
-Check requirements.txt, but mainly: `numpy`, `matplotlib`, `PIL`, `h5py` (for storing data) and `numba` (for enhancing performance) 
+Check requirements.txt, but mainly: `numpy`, `matplotlib`, `PIL`, `h5py` (for storing data) and `numba` (for parallelization) 
 
