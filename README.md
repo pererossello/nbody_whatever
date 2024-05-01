@@ -8,7 +8,7 @@ A toy N-body simulator. Use an image for your initial conditions by converting i
 
 - `main/`: Main module.
     - `main/make_ics.py`: Contains the `InitialConditions` class for reading the image and converting it to N bodies. 
-    - `main/simulate.py`: Contains the `NBodySimulation` for performing the simulation.
+    - `main/simulate.py`: Contains the `NBodySimulation` class for performing the simulation.
     - `main/plot_utils.py`: Utility functions for plotting and making animations of the simulated output. 
 
 
