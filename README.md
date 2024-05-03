@@ -1,4 +1,4 @@
-# nbody_hatever
+# nbody_whatever
 
 ![Example](example.gif)
 
