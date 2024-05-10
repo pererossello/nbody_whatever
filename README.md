@@ -20,3 +20,6 @@ Check the notebook `example_usage.ipynb`.
 
 Check requirements.txt, but mainly: `numpy`, `matplotlib`, `PIL`, `h5py` (for storing data) and `numba` (for parallelization) 
 
+## CLI Usage  
+
+`python your_script.py --image_path "path/to/your/image.png" --N 10000`
