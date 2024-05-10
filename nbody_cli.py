@@ -1,29 +1,59 @@
 import argparse
 import os
+import json
 from datetime import datetime
+from dataclasses import dataclass, asdict
 
 import main.plot_utils as pu
 from main.make_ics import InintialConditions
 from main.simulate import NBodySimulation
 
 
-def main(image_path, N, MASS, R_CM, V_CM, invert, factor, marker_size, lim, facecolor, ax_color, greyscale, ax_spines, show, T, dt, num_snapshots,
-         fps, delete_frames, reverse, format):
+@dataclass
+class SimulationConfig:
+    image_path: str = "sample_images/einstein.jpg"
+    N: float = 1e5
+    MASS: float = 2
+    R_CM: list = (0, 0)
+    V_CM: list = (0, 0)
+    invert: bool = True
+    factor: float = 0.5
+    marker_size: float = 0.75
+    lim: float = 0.55
+    facecolor: str = "#ebe9d8"
+    ax_color: str = "k"
+    greyscale: bool = False
+    ax_spines: bool = False
+    show: bool = True
+    T: float = 3
+    dt: float = 0.01
+    num_snapshots: int = 300
+    fps: int = 30
+    delete_frames: bool = False
+    reverse: bool = True
+    format: str = ".mp4"
+
+
+def main(config: SimulationConfig):
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     simulation_folder = f"results/{timestamp}/"
     os.makedirs(simulation_folder, exist_ok=True)
-    Ics = InintialConditions(image_path, N, MASS=MASS, R_CM=R_CM, V_CM=V_CM, invert=invert)
-    Ics.set_circular_velocity(factor=factor)
-    Ics.set_plot(marker_size=marker_size, lim=lim, facecolor=facecolor, ax_color=ax_color, greyscale=greyscale, ax_spines=ax_spines, show=show)
 
-    simulation_folder = "results/"
-    os.makedirs(simulation_folder, exist_ok=True)
+    # Write configuration to JSON file
+    with open(os.path.join(simulation_folder, 'config.json'), 'w') as config_file:
+        json.dump(asdict(config), config_file, indent=4, sort_keys=True)
+
+    Ics = InintialConditions(config.image_path, config.N, MASS=config.MASS, R_CM=config.R_CM, V_CM=config.V_CM, invert=config.invert)
+    Ics.set_circular_velocity(factor=config.factor)
+    Ics.set_plot(marker_size=config.marker_size, lim=config.lim, facecolor=config.facecolor, ax_color=config.ax_color, greyscale=config.greyscale,
+                 ax_spines=config.ax_spines, show=config.show)
+
     path_ics = os.path.join(simulation_folder, "initial_conditions.hdf5")
     Ics.generate_ic_file(path_ics)
 
     path_output = os.path.join(simulation_folder, 'output.hdf5')
     Sim = NBodySimulation(path_ics, path_output)
-    Sim.set_time(T, dt, snapshots=num_snapshots)
+    Sim.set_time(config.T, config.dt, snapshots=config.num_snapshots)
     Sim.estimate_runtime(num_steps=3)
     Sim.run_simulation(0.05)
 
@@ -31,10 +61,10 @@ def main(image_path, N, MASS, R_CM, V_CM, invert, factor, marker_size, lim, face
         path_output,
         fig_size=720,
         ratio=1,
-        fps=fps,
-        delete_frames=delete_frames,
-        reverse=reverse,
-        format=format,
+        fps=config.fps,
+        delete_frames=config.delete_frames,
+        reverse=config.reverse,
+        format=config.format,
     )
 
 
@@ -63,4 +93,7 @@ if __name__ == "__main__":
     parser.add_argument("--format", type=str, default=".gif", help="Format of the output video (e.g., .mp4, .gif).")
     args = parser.parse_args()
 
-    main(**vars(args))
+    args_dict = {k: v for k, v in vars(args).items() if v is not None}
+    config = SimulationConfig(**args_dict)
+
+    main(config)
