@@ -20,3 +20,10 @@ Check the notebook `example_usage.ipynb`.
 
 Check requirements.txt, but mainly: `numpy`, `matplotlib`, `PIL`, `h5py` (for storing data) and `numba` (for parallelization) 
 
+## CLI Usage  
+
+Command:  
+`python nbody_cli.py --image_path "path/to/your/image.png" --N 100`
+
+When run via cli, the resulting video will stored inside 'results/_timestamp_' folder, along with a json which capture the 
+configuration/parameters that were applied at the time of the simulation.
