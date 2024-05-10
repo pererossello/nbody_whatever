@@ -12,7 +12,7 @@ from main.simulate import NBodySimulation
 @dataclass
 class SimulationConfig:
     image_path: str = "sample_images/einstein.jpg"
-    N: float = 1e5
+    N: float = 5e3
     MASS: float = 2
     R_CM: list = (0, 0)
     V_CM: list = (0, 0)
